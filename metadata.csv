@@ -2,14 +2,14 @@ segment_id,segment_index,source_file,sample_rate,channels,start,end,duration,aud
 hopdaothanh_00000.wav,0,hopdaothanh.m4a,16000,1,0.138,12.694,12.556,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00000.wav,,labeled,,"Cũng sử dụng giảng dạy, sử dụng trên các hệ thống mạng, tuy nhiên thì cái đường truyền mạng các trường thì chưa được ổn định lắm, và tốc độ cũng còn chậm"
 hopdaothanh_00001.wav,1,hopdaothanh.m4a,16000,1,12.906,24.086,11.18,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00001.wav,,rejected,"Noise,Unintelligible",
 hopdaothanh_00002.wav,2,hopdaothanh.m4a,16000,1,24.778,29.91,5.132,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00002.wav,,rejected,Noise,
-hopdaothanh_00003.wav,3,hopdaothanh.m4a,16000,1,30.73,37.046,6.316,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00003.wav,,labeled,,"đó là cái đề nghị thứ nhất, còn vấn đề liên quan đến nâng cấp đường truyền mạng thì nói luôn"
+hopdaothanh_00003.wav,3,hopdaothanh.m4a,16000,1,30.73,37.046,6.316,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00003.wav,,labeled,,"đó là cái đề nghị thứ nhất, cái vấn đề liên quan đến nâng cấp đường truyền mạng thì nói luôn"
 hopdaothanh_00004.wav,4,hopdaothanh.m4a,16000,1,39.274,48.886,9.612,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00004.wav,,labeled,,"tại cơ sở 1, thì khi mà đưa vào kết nối thì cũng lưu ý về mình sẽ tính tính toán vấn đề đường truyền mạng được hay không"
 hopdaothanh_00005.wav,5,hopdaothanh.m4a,16000,1,254.762,261.142,6.38,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00005.wav,,rejected,Overlap,
 hopdaothanh_00006.wav,6,hopdaothanh.m4a,16000,1,273.61,287.446,13.836,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00006.wav,,rejected,Overlap,
 hopdaothanh_00007.wav,7,hopdaothanh.m4a,16000,1,292.842,306.294,13.452,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00007.wav,,rejected,Overlap,
 hopdaothanh_00008.wav,8,hopdaothanh.m4a,16000,1,306.506,319.83,13.324,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00008.wav,,rejected,Unintelligible,
-hopdaothanh_00009.wav,9,hopdaothanh.m4a,16000,1,320.394,326.838,6.444,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00009.wav,,labeled,,"còn cái hệ thống tự động, quản trí tự động ấy Dũng, ví dụ như có cái"
-hopdaothanh_00010.wav,10,hopdaothanh.m4a,16000,1,327.722,341.366,13.644,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00010.wav,,labeled,,"tại thư viện có 1 cái tủ, giả sử như em nói là vô phần mềm thư viện mượn cuốn sách đó, mượn cuốn sách đó, thì làm sao đó, tôi nói về chuyện sách giấy nha, còn sách kia thì nó đơn giản thôi, mượn cuốn sách đó"
+hopdaothanh_00009.wav,9,hopdaothanh.m4a,16000,1,320.394,326.838,6.444,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00009.wav,,labeled,,"còn cái hệ thống tự động quản quản trị tự động ấy Dũng, ví dụ như có cái"
+hopdaothanh_00010.wav,10,hopdaothanh.m4a,16000,1,327.722,341.366,13.644,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00010.wav,,labeled,,"tại thư viện có 1 cái tủ há, giả sử như em nói là vô phần mềm thư viện mượn cuốn sách đó, mượn cuốn sách đó, thì làm sao đó, tôi nói về chuyện sách giấy nha, còn sách kia thì nó đơn giản thôi, mượn cuốn sách đó"
 hopdaothanh_00011.wav,11,hopdaothanh.m4a,16000,1,341.578,345.238,3.66,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00011.wav,,labeled,,"mà không phải trường của nó, làm sao là nó chỉ nhấn"
 hopdaothanh_00012.wav,12,hopdaothanh.m4a,16000,1,346.25,358.902,12.652,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00012.wav,,labeled,,"hẹn thời gian mà để lấy sách á, thì trong cái tủ đó phải có cuốn sách trong đó, và đến ngày nó xong rồi nó muốn trả thì nó lại chỗ đó nó trả luôn, chứ nó không có đi đâu cả, nó bỏ vô cái rổ đó"
 hopdaothanh_00013.wav,13,hopdaothanh.m4a,16000,1,359.05,372.214,13.164,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00013.wav,,labeled,,"tất cả bộ phận tự động hết, tức là nó đưa cuốn sách vô để quét rồi xong đăng ký, mỗi học sinh nó có 1 cái mã"
@@ -29,29 +29,29 @@ hopdaothanh_00026.wav,26,hopdaothanh.m4a,16000,1,482.922,490.006,7.084,/content/
 hopdaothanh_00027.wav,27,hopdaothanh.m4a,16000,1,491.018,498.038,7.02,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00027.wav,,rejected,"Noise,Unintelligible",
 hopdaothanh_00028.wav,28,hopdaothanh.m4a,16000,1,501.386,514.774,13.388,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00028.wav,,labeled,,"sinh viên vô thì nó học rần rần vậy đó, nhưng mà có cái là vô muốn tra cứu gì đó có máy để tra cứu, để nghiên cứu sách điện tử có sách giấy có"
 hopdaothanh_00029.wav,29,hopdaothanh.m4a,16000,1,518.25,526.55,8.3,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00029.wav,,rejected,"Noise,Overlap",
-hopdaothanh_00030.wav,30,hopdaothanh.m4a,16000,1,526.762,541.174,14.412,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00030.wav,,pending,,
-hopdaothanh_00031.wav,31,hopdaothanh.m4a,16000,1,541.642,555.446,13.804,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00031.wav,,pending,,
-hopdaothanh_00032.wav,32,hopdaothanh.m4a,16000,1,561.034,575.19,14.156,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00032.wav,,pending,,
-hopdaothanh_00033.wav,33,hopdaothanh.m4a,16000,1,575.818,580.118,4.3,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00033.wav,,pending,,
-hopdaothanh_00034.wav,34,hopdaothanh.m4a,16000,1,581.29,592.982,11.692,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00034.wav,,pending,,
-hopdaothanh_00035.wav,35,hopdaothanh.m4a,16000,1,593.802,603.99,10.188,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00035.wav,,pending,,
-hopdaothanh_00036.wav,36,hopdaothanh.m4a,16000,1,604.554,619.222,14.668,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00036.wav,,pending,,
-hopdaothanh_00037.wav,37,hopdaothanh.m4a,16000,1,619.402,630.006,10.604,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00037.wav,,pending,,
-hopdaothanh_00038.wav,38,hopdaothanh.m4a,16000,1,630.442,638.774,8.332,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00038.wav,,pending,,
-hopdaothanh_00039.wav,39,hopdaothanh.m4a,16000,1,638.954,651.83,12.876,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00039.wav,,pending,,
-hopdaothanh_00040.wav,40,hopdaothanh.m4a,16000,1,653.13,661.27,8.14,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00040.wav,,pending,,
-hopdaothanh_00041.wav,41,hopdaothanh.m4a,16000,1,664.266,677.622,13.356,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00041.wav,,pending,,
-hopdaothanh_00042.wav,42,hopdaothanh.m4a,16000,1,678.026,682.326,4.3,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00042.wav,,pending,,
-hopdaothanh_00043.wav,43,hopdaothanh.m4a,16000,1,682.506,695.606,13.1,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00043.wav,,pending,,
-hopdaothanh_00044.wav,44,hopdaothanh.m4a,16000,1,695.85,703.798,7.948,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00044.wav,,pending,,
-hopdaothanh_00045.wav,45,hopdaothanh.m4a,16000,1,704.394,707.638,3.244,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00045.wav,,pending,,
-hopdaothanh_00046.wav,46,hopdaothanh.m4a,16000,1,708.394,716.854,8.46,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00046.wav,,pending,,
-hopdaothanh_00047.wav,47,hopdaothanh.m4a,16000,1,717.706,721.59,3.884,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00047.wav,,pending,,
-hopdaothanh_00048.wav,48,hopdaothanh.m4a,16000,1,725.034,733.034,8.0,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00048.wav,,pending,,
-hopdaothanh_00049.wav,49,hopdaothanh.m4a,16000,1,733.034,741.686,8.652,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00049.wav,,pending,,
-hopdaothanh_00050.wav,50,hopdaothanh.m4a,16000,1,742.57,745.974,3.404,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00050.wav,,pending,,
-hopdaothanh_00051.wav,51,hopdaothanh.m4a,16000,1,751.914,764.374,12.46,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00051.wav,,pending,,
-hopdaothanh_00052.wav,52,hopdaothanh.m4a,16000,1,765.962,773.366,7.404,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00052.wav,,pending,,
+hopdaothanh_00030.wav,30,hopdaothanh.m4a,16000,1,526.762,541.174,14.412,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00030.wav,,rejected,Unintelligible,
+hopdaothanh_00031.wav,31,hopdaothanh.m4a,16000,1,541.642,555.446,13.804,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00031.wav,,labeled,,"quét để mình xác nhận bằng mã số của mình đó rồi mượn, mượn xong đi về á là đi về á là ngay cái cửa mà bước ra thư viện nó có một cái cái"
+hopdaothanh_00032.wav,32,hopdaothanh.m4a,16000,1,561.034,575.19,14.156,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00032.wav,,labeled,,tới chừng mình đọc xong mình đi tới ngay chỗ đó mình trả trả thì cũng tự động luôn để cuốn sách nó vô là máy quét xác nhận rồi mình xác nhận vô cái là xong rồi những cái người phục vụ chúng ta mới lấy cái đó vô tay làm sạch.
+hopdaothanh_00033.wav,33,hopdaothanh.m4a,16000,1,575.818,580.118,4.3,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00033.wav,,rejected,Unintelligible,
+hopdaothanh_00034.wav,34,hopdaothanh.m4a,16000,1,581.29,592.982,11.692,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00034.wav,,rejected,"Noise,Overlap,Unintelligible",
+hopdaothanh_00035.wav,35,hopdaothanh.m4a,16000,1,593.802,603.99,10.188,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00035.wav,,rejected,"Overlap,Clipping",
+hopdaothanh_00036.wav,36,hopdaothanh.m4a,16000,1,604.554,619.222,14.668,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00036.wav,,labeled,,"xây dựng như vậy là mình phải nói mình dùng cái từ giống như ý tưởng lớn á, làm nền tảng để liên kết tất cả các thư diện để chi, để người đọc á người đọc có thể tìm những cái có những cái tài liệu là nó phải."
+hopdaothanh_00037.wav,37,hopdaothanh.m4a,16000,1,619.402,630.006,10.604,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00037.wav,,rejected,"Noise,Unintelligible",
+hopdaothanh_00038.wav,38,hopdaothanh.m4a,16000,1,630.442,638.774,8.332,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00038.wav,,labeled,,"quá tốt còn không trước mắt là sách điện tử và phải liên kết, sách điện tử thì dễ rồi bắt buộc phải liên kết tất cả thư viện trên địa bàn phường."
+hopdaothanh_00039.wav,39,hopdaothanh.m4a,16000,1,638.954,651.83,12.876,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00039.wav,,labeled,,"rồi sau đó mà liên kết với lại các cái trường khác nữa thì tính sau, sẵn sàng mở rộng ra trên kệ sách toàn tỉnh ờ há, thậm chí toàn quốc."
+hopdaothanh_00040.wav,40,hopdaothanh.m4a,16000,1,653.13,661.27,8.14,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00040.wav,,rejected,"Noise,Overlap,Clipping,Unintelligible",
+hopdaothanh_00041.wav,41,hopdaothanh.m4a,16000,1,664.266,677.622,13.356,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00041.wav,,labeled,,"tuy nhiên là những cái phần mềm này là tuy nhiên là phải có thiết bị theo rồi thí dụ như bây giờ là soạn giảng, soạn giảng không đơn giản là cái phần mềm mà trong cái máy đơn giản vậy đâu."
+hopdaothanh_00042.wav,42,hopdaothanh.m4a,16000,1,678.026,682.326,4.3,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00042.wav,,rejected,Unintelligible,
+hopdaothanh_00043.wav,43,hopdaothanh.m4a,16000,1,682.506,695.606,13.1,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00043.wav,,labeled,,kho dữ liệu đi kho dữ liệu như cái soạn giảng thì nó nằm trong kho dữ liệu và nó liên kết tới các mạng tương tác của tất cả các phòng học luôn là giáo viên là không cần phải đem laptop không cần phải.
+hopdaothanh_00044.wav,44,hopdaothanh.m4a,16000,1,695.85,703.798,7.948,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00044.wav,,rejected,"Noise,Unintelligible",
+hopdaothanh_00045.wav,45,hopdaothanh.m4a,16000,1,704.394,707.638,3.244,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00045.wav,,rejected,Unintelligible,
+hopdaothanh_00046.wav,46,hopdaothanh.m4a,16000,1,708.394,716.854,8.46,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00046.wav,,labeled,,và các phần mềm thiết bị là thiết bị bao gồm tất cả tài sản trong nhà trường có và sẽ đưa vào trong các phần mềm này để quản trị.
+hopdaothanh_00047.wav,47,hopdaothanh.m4a,16000,1,717.706,721.59,3.884,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00047.wav,,rejected,"Overlap,Clipping,Unintelligible",
+hopdaothanh_00048.wav,48,hopdaothanh.m4a,16000,1,725.034,733.034,8.0,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00048.wav,,rejected,"Overlap,Unintelligible",
+hopdaothanh_00049.wav,49,hopdaothanh.m4a,16000,1,733.034,741.686,8.652,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00049.wav,,rejected,"Overlap,Unintelligible",
+hopdaothanh_00050.wav,50,hopdaothanh.m4a,16000,1,742.57,745.974,3.404,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00050.wav,,rejected,"Overlap,Unintelligible",
+hopdaothanh_00051.wav,51,hopdaothanh.m4a,16000,1,751.914,764.374,12.46,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00051.wav,,rejected,"Noise,Overlap,Unintelligible",
+hopdaothanh_00052.wav,52,hopdaothanh.m4a,16000,1,765.962,773.366,7.404,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00052.wav,,rejected,"Noise,Unintelligible",
 hopdaothanh_00053.wav,53,hopdaothanh.m4a,16000,1,774.634,779.894,5.26,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00053.wav,,pending,,
 hopdaothanh_00054.wav,54,hopdaothanh.m4a,16000,1,788.586,796.278,7.692,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00054.wav,,pending,,
 hopdaothanh_00055.wav,55,hopdaothanh.m4a,16000,1,798.186,806.186,8.0,/content/drive/MyDrive/ASR_Dataset/segments/hopdaothanh_00055.wav,,pending,,

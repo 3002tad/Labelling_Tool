@@ -6,6 +6,7 @@ thống kê và tìm vị trí tiếp tục.
 """
 
 import os
+import json
 import pandas as pd
 from enum import Enum
 from typing import Optional, Dict, Any, List
@@ -48,6 +49,7 @@ class SegmentRecord:
         self.status: str = str(row.get(COL_STATUS, SegmentStatus.PENDING.value))
         self.reject_reason: str = str(row.get(COL_REJECT_REASON, ""))
         self.transcript: str = str(row.get(COL_TRANSCRIPT, ""))
+        self.pre_label: str = ""
 
         # Ưu tiên tên file trong cột segment_id (file tồn tại trong audio_dir)
         candidate = os.path.join(audio_dir, self.segment_id)
@@ -118,11 +120,25 @@ class DataModel:
             if col not in self._df.columns:
                 self._df[col] = default
 
+        # Load pre_labels if exists
+        pre_labels = {}
+        pre_labels_path = os.path.join(os.path.dirname(csv_path), "pre_labels.json")
+        if not os.path.isfile(pre_labels_path):
+            pre_labels_path = os.path.join(os.path.dirname(csv_path), "pre_label.json")
+        if os.path.isfile(pre_labels_path):
+            try:
+                with open(pre_labels_path, "r", encoding="utf-8") as f:
+                    pre_labels = json.load(f)
+            except Exception:
+                pass
+
         # Xây danh sách SegmentRecord
-        self._records = [
-            SegmentRecord(row.to_dict(), audio_dir)
-            for _, row in self._df.iterrows()
-        ]
+        self._records = []
+        for _, row in self._df.iterrows():
+            rec = SegmentRecord(row.to_dict(), audio_dir)
+            if rec.segment_id in pre_labels and "text" in pre_labels[rec.segment_id]:
+                rec.pre_label = pre_labels[rec.segment_id]["text"]
+            self._records.append(rec)
 
         # Tiếp tục từ vị trí chưa xử lý đầu tiên
         self._current_index = self._find_resume_index()

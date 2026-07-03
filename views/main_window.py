@@ -518,8 +518,12 @@ class MainWindow(QMainWindow):
         )
 
         # Restore previous transcript if already labeled/rejected
+        # If no transcript exists, fill with pre_label
         self._transcript_edit.blockSignals(True)
-        self._transcript_edit.setPlainText(rec.transcript)
+        if rec.transcript:
+            self._transcript_edit.setPlainText(rec.transcript)
+        else:
+            self._transcript_edit.setPlainText(getattr(rec, "pre_label", ""))
         self._transcript_edit.blockSignals(False)
         self._update_char_count()
 
