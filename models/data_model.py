@@ -95,6 +95,9 @@ class DataModel:
         self._df: Optional[pd.DataFrame] = None
         self._records: List[SegmentRecord] = []
         self._current_index: int = 0
+        self._filter: str = "all"
+        self._filtered_indices: List[int] = []
+        self._current_idx_in_filter: int = -1
 
     # ------------------------------------------------------------------ #
     # Public API — Load
@@ -140,8 +143,15 @@ class DataModel:
                 rec.pre_label = pre_labels[rec.segment_id]["text"]
             self._records.append(rec)
 
+        # Apply default filter
+        self.set_filter("all")
+
         # Tiếp tục từ vị trí chưa xử lý đầu tiên
         self._current_index = self._find_resume_index()
+        try:
+            self._current_idx_in_filter = self._filtered_indices.index(self._current_index)
+        except ValueError:
+            pass
 
     def _find_resume_index(self) -> int:
         """Trả về index của segment pending đầu tiên; nếu hết thì trả về 0."""
@@ -162,21 +172,59 @@ class DataModel:
     def total(self) -> int:
         return len(self._records)
 
+    def set_filter(self, filter_status: str) -> None:
+        """filter_status: 'all', 'pending', 'labeled', 'rejected'"""
+        self._filter = filter_status
+        self._apply_filter()
+
+    def _apply_filter(self) -> None:
+        self._filtered_indices = []
+        for i, rec in enumerate(self._records):
+            if self._filter == "all" or rec.status == self._filter:
+                self._filtered_indices.append(i)
+        
+        if not self._filtered_indices:
+            self._current_idx_in_filter = -1
+            self._current_index = -1
+        else:
+            found = False
+            for f_idx, real_idx in enumerate(self._filtered_indices):
+                if real_idx >= self._current_index:
+                    self._current_idx_in_filter = f_idx
+                    self._current_index = real_idx
+                    found = True
+                    break
+            if not found:
+                self._current_idx_in_filter = len(self._filtered_indices) - 1
+                self._current_index = self._filtered_indices[-1]
+
     def go_to(self, index: int) -> bool:
         """Chuyển đến segment theo index. Trả về True nếu hợp lệ."""
         if 0 <= index < self.total:
             self._current_index = index
+            try:
+                self._current_idx_in_filter = self._filtered_indices.index(index)
+            except ValueError:
+                self.set_filter("all")
             return True
         return False
 
     def next(self) -> bool:
-        return self.go_to(self._current_index + 1)
+        if self._current_idx_in_filter + 1 < len(self._filtered_indices):
+            self._current_idx_in_filter += 1
+            self._current_index = self._filtered_indices[self._current_idx_in_filter]
+            return True
+        return False
 
     def previous(self) -> bool:
-        return self.go_to(self._current_index - 1)
+        if self._current_idx_in_filter - 1 >= 0:
+            self._current_idx_in_filter -= 1
+            self._current_index = self._filtered_indices[self._current_idx_in_filter]
+            return True
+        return False
 
     def current_record(self) -> Optional[SegmentRecord]:
-        if not self._records:
+        if not self._records or self._current_index < 0 or self._current_index >= len(self._records):
             return None
         return self._records[self._current_index]
 

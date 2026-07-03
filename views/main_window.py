@@ -16,7 +16,7 @@ from PySide6.QtWidgets import (
     QLabel, QTextEdit, QPushButton, QProgressBar,
     QFileDialog, QSplitter, QFrame, QSlider,
     QStatusBar, QMessageBox, QSizePolicy, QToolButton,
-    QScrollArea
+    QScrollArea, QComboBox
 )
 from PySide6.QtCore import Qt, QTimer, Slot, QSize, Signal
 from PySide6.QtGui import (
@@ -242,6 +242,22 @@ class MainWindow(QMainWindow):
         self._stats_panel = StatsPanel()
         scroll.setWidget(self._stats_panel)
         layout.addWidget(scroll, stretch=1)
+
+        # Filter combo box
+        filter_row = QHBoxLayout()
+        filter_lbl = QLabel("Lọc:")
+        filter_lbl.setStyleSheet("color: #7f849c; font-size: 12px;")
+        self._filter_combo = QComboBox()
+        self._filter_combo.setObjectName("filterCombo")
+        self._filter_combo.setFixedHeight(30)
+        self._filter_combo.addItem("Tất cả", "all")
+        self._filter_combo.addItem("Chưa gán (Pending)", "pending")
+        self._filter_combo.addItem("Đã gán (Labeled)", "labeled")
+        self._filter_combo.addItem("Bị loại (Rejected)", "rejected")
+        self._filter_combo.currentIndexChanged.connect(self._on_filter_changed)
+        filter_row.addWidget(filter_lbl)
+        filter_row.addWidget(self._filter_combo, stretch=1)
+        layout.addLayout(filter_row)
 
         # Navigate to index
         nav_row = QHBoxLayout()
@@ -507,6 +523,18 @@ class MainWindow(QMainWindow):
 
     @Slot(int)
     def _on_segment_changed(self, index: int) -> None:
+        if index == -1:
+            self._title_lbl.setText("Không có segment nào khớp với bộ lọc")
+            self._transcript_edit.blockSignals(True)
+            self._transcript_edit.setPlainText("")
+            self._transcript_edit.blockSignals(False)
+            self._update_char_count()
+            self._wave_bar.slider.setValue(0)
+            self._pos_lbl.setText("0:00")
+            self._dur_lbl.setText("0:00")
+            self._update_timer.stop()
+            return
+
         rec = self._controller.current_record()
         if rec is None:
             return
@@ -643,6 +671,11 @@ class MainWindow(QMainWindow):
             self._controller.navigate_to(idx)
         except ValueError:
             self._on_status_message("⚠ Vui lòng nhập số nguyên hợp lệ.")
+
+    def _on_filter_changed(self, index: int) -> None:
+        data = self._filter_combo.itemData(index)
+        if data:
+            self._controller.set_filter(data)
 
     def _on_transcript_changed(self) -> None:
         self._update_char_count()

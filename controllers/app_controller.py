@@ -193,6 +193,13 @@ class AppController(QObject):
         if self._model.go_to(index):
             self._load_current_segment()
 
+    @Slot(str)
+    def set_filter(self, filter_status: str) -> None:
+        if not self._model.is_loaded:
+            return
+        self._model.set_filter(filter_status)
+        self._load_current_segment()
+
     # ------------------------------------------------------------------ #
     # Public API — Playback
     # ------------------------------------------------------------------ #
@@ -276,6 +283,9 @@ class AppController(QObject):
         """Tải audio và phát, rồi phát signal để View cập nhật."""
         rec = self._model.current_record()
         if rec is None:
+            self._player.stop()
+            self.segment_changed.emit(-1)
+            self.status_message.emit("Không có dữ liệu khớp với bộ lọc.")
             return
         if rec.audio_exists:
             self._player.load(rec.audio_path)
