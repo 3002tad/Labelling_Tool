@@ -180,7 +180,11 @@ class DataModel:
         self._save_csv()
 
     def reject_segment(self, reason: str) -> None:
-        """Đánh dấu segment hiện tại là rejected và lưu CSV."""
+        """
+        Đánh dấu segment hiện tại là rejected và lưu CSV.
+        `reason` có thể là một lý do đơn hoặc nhiều lý do cách nhau bằng dấu phẩy,
+        VD: 'Noise' hoặc 'Noise,Clipping'.
+        """
         rec = self.current_record()
         if rec is None:
             return
@@ -205,8 +209,12 @@ class DataModel:
 
         reject_by_reason: Dict[str, int] = {r: 0 for r in REJECT_REASONS}
         for rec in self._records:
-            if rec.is_rejected and rec.reject_reason in reject_by_reason:
-                reject_by_reason[rec.reject_reason] += 1
+            if rec.is_rejected and rec.reject_reason:
+                # Hỗ trợ cả lý do đơn lẫn nhiều lý do ("Noise,Clipping")
+                for part in rec.reject_reason.split(","):
+                    part = part.strip()
+                    if part in reject_by_reason:
+                        reject_by_reason[part] += 1
 
         total_duration = sum(r.duration for r in self._records)
         labeled_duration = sum(r.duration for r in self._records if r.is_labeled)

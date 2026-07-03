@@ -24,7 +24,7 @@ class _StatCard(QFrame):
         super().__init__(parent)
         self.setObjectName("statCard")
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(12, 10, 12, 10)
+        layout.setContentsMargins(8, 8, 8, 8)
         layout.setSpacing(2)
 
         self._value_lbl = QLabel("0")
@@ -69,7 +69,7 @@ class _RejectReasonRow(QWidget):
 
         reason_lbl = QLabel(reason)
         reason_lbl.setStyleSheet("color: #a6adc8; font-size: 12px;")
-        reason_lbl.setFixedWidth(110)
+        reason_lbl.setFixedWidth(90)
 
         self._bar = QProgressBar()
         self._bar.setRange(0, 100)
@@ -123,20 +123,23 @@ class StatsPanel(QWidget):
         title.setObjectName("statsPanelTitle")
         root.addWidget(title)
 
-        # ── Summary cards ────────────────────────────────────────────────
-        cards_row = QHBoxLayout()
-        cards_row.setSpacing(8)
+        # ── Summary cards (2×2 grid) ─────────────────────────────────────
+        from PySide6.QtWidgets import QGridLayout
+        cards_grid = QGridLayout()
+        cards_grid.setSpacing(6)
+        cards_grid.setContentsMargins(0, 0, 0, 0)
 
         self._card_total    = _StatCard("Tổng",   "#89b4fa")
         self._card_labeled  = _StatCard("Đã gán", "#a6e3a1")
         self._card_rejected = _StatCard("Reject", "#f38ba8")
         self._card_pending  = _StatCard("Còn lại","#f9e2af")
 
-        for card in (self._card_total, self._card_labeled,
-                     self._card_rejected, self._card_pending):
-            cards_row.addWidget(card)
+        cards_grid.addWidget(self._card_total,    0, 0)
+        cards_grid.addWidget(self._card_labeled,  0, 1)
+        cards_grid.addWidget(self._card_rejected, 1, 0)
+        cards_grid.addWidget(self._card_pending,  1, 1)
 
-        root.addLayout(cards_row)
+        root.addLayout(cards_grid)
 
         # ── Overall progress ─────────────────────────────────────────────
         progress_frame = QFrame()

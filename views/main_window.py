@@ -18,17 +18,47 @@ from PySide6.QtWidgets import (
     QStatusBar, QMessageBox, QSizePolicy, QToolButton,
     QScrollArea
 )
-from PySide6.QtCore import Qt, QTimer, Slot, QSize
+from PySide6.QtCore import Qt, QTimer, Slot, QSize, Signal
 from PySide6.QtGui import (
     QFont, QKeySequence, QShortcut, QIcon, QColor,
-    QPalette, QFontDatabase
+    QPalette, QFontDatabase, QMouseEvent, QKeyEvent
 )
 
 from controllers.app_controller import AppController
 from models.data_model import SegmentRecord, SegmentStatus
 from views.stats_panel import StatsPanel
 from views.reject_dialog import RejectDialog
+from views.export_dialog import ExportDialog
 
+
+class ClickableSlider(QSlider):
+    def mousePressEvent(self, ev: QMouseEvent) -> None:
+        if ev.button() == Qt.MouseButton.LeftButton:
+            val = self.minimum() + ((self.maximum() - self.minimum()) * ev.position().x()) / self.width()
+            self.setValue(int(val))
+            self.sliderMoved.emit(int(val))
+            ev.accept()
+        super().mousePressEvent(ev)
+
+class TranscriptTextEdit(QTextEdit):
+    """Custom TextEdit để chặn phím Enter/Ctrl+Enter, nhưng cho phép Shift+Enter xuống dòng."""
+    
+    save_next_requested = Signal()
+    save_only_requested = Signal()
+
+    def keyPressEvent(self, ev: QKeyEvent) -> None:
+        if ev.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+            mods = ev.modifiers()
+            if mods == Qt.KeyboardModifier.ControlModifier:
+                self.save_only_requested.emit()
+                return
+            elif mods == Qt.KeyboardModifier.ShiftModifier:
+                super().keyPressEvent(ev)
+                return
+            elif mods == Qt.KeyboardModifier.NoModifier:
+                self.save_next_requested.emit()
+                return
+        super().keyPressEvent(ev)
 
 class WaveformBar(QWidget):
     """Thanh progress đơn giản thay thế waveform — nhẹ & không cần thư viện ngoài."""
@@ -36,7 +66,7 @@ class WaveformBar(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFixedHeight(48)
-        self._slider = QSlider(Qt.Orientation.Horizontal, self)
+        self._slider = ClickableSlider(Qt.Orientation.Horizontal, self)
         self._slider.setRange(0, 1000)
         self._slider.setValue(0)
         self._slider.setObjectName("audioSlider")
@@ -172,9 +202,9 @@ class MainWindow(QMainWindow):
     def _build_sidebar(self) -> QWidget:
         sidebar = QWidget()
         sidebar.setObjectName("sidebar")
-        sidebar.setFixedWidth(280)
+        sidebar.setFixedWidth(300)
         layout = QVBoxLayout(sidebar)
-        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setContentsMargins(12, 16, 12, 16)
         layout.setSpacing(12)
 
         # Logo / title
@@ -193,6 +223,14 @@ class MainWindow(QMainWindow):
         self._btn_open.setFixedHeight(38)
         self._btn_open.clicked.connect(self._on_open_project)
         layout.addWidget(self._btn_open)
+
+        # Export button
+        self._btn_export_data = QPushButton("📤  Xuất Dataset")
+        self._btn_export_data.setObjectName("btnExportData")
+        self._btn_export_data.setFixedHeight(38)
+        self._btn_export_data.setEnabled(False)   # enabled sau khi mở dự án
+        self._btn_export_data.clicked.connect(self._on_export_data)
+        layout.addWidget(self._btn_export_data)
 
         # Stats panel (scrollable)
         scroll = QScrollArea()
@@ -345,13 +383,15 @@ class MainWindow(QMainWindow):
         hdr.addWidget(self._char_count_lbl)
         layout.addLayout(hdr)
 
-        self._transcript_edit = QTextEdit()
+        self._transcript_edit = TranscriptTextEdit()
         self._transcript_edit.setObjectName("transcriptEdit")
         self._transcript_edit.setPlaceholderText(
-            "Nhập transcript tại đây... (Enter: Lưu & Next | Ctrl+Enter: Chỉ lưu)"
+            "Nhập transcript tại đây... (Enter: Lưu & Next | Ctrl+Enter: Chỉ lưu | Shift+Enter: Xuống dòng)"
         )
         self._transcript_edit.setAcceptRichText(False)
         self._transcript_edit.textChanged.connect(self._on_transcript_changed)
+        self._transcript_edit.save_next_requested.connect(self._on_save_next)
+        self._transcript_edit.save_only_requested.connect(self._on_save_only)
         layout.addWidget(self._transcript_edit, stretch=1)
 
         return frame
@@ -423,6 +463,9 @@ class MainWindow(QMainWindow):
         self._btn_replay.clicked.connect(ctrl.replay)
         self._btn_prev.clicked.connect(ctrl.navigate_previous)
         self._btn_next.clicked.connect(ctrl.navigate_next)
+
+        # Slider → Controller
+        self._wave_bar.slider.sliderMoved.connect(self._on_seek)
 
     # ================================================================== #
     # Shortcuts
@@ -525,6 +568,13 @@ class MainWindow(QMainWindow):
     def _on_duration_changed(self, dur_ms: int) -> None:
         self._dur_lbl.setText(self._ms_to_str(dur_ms))
 
+    @Slot(int)
+    def _on_seek(self, value: int) -> None:
+        dur = self._controller.player().duration
+        if dur > 0:
+            pos_ms = int((value / 1000) * dur)
+            self._controller.set_audio_position(pos_ms)
+
     # ================================================================== #
     # Slots — User actions
     # ================================================================== #
@@ -543,6 +593,19 @@ class MainWindow(QMainWindow):
         if not audio_dir:
             return
         self._controller.load_project(csv_path, audio_dir)
+        self._btn_export_data.setEnabled(True)
+
+    def _on_export_data(self) -> None:
+        model = self._controller.model()
+        if not model.is_loaded:
+            return
+        dlg = ExportDialog(model, model._audio_dir or "", self)
+        dlg.export_done.connect(
+            lambda count, path: self._on_status_message(
+                f"📤 Đã xuất {count} bản ghi → {path}"
+            )
+        )
+        dlg.exec()
 
     def _on_save_next(self) -> None:
         transcript = self._transcript_edit.toPlainText()
@@ -696,6 +759,26 @@ QScrollBar::handle:vertical {
 #btnOpen:hover {
     background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
         stop:0 #a0c4ff, stop:1 #d5b0ff);
+}
+
+/* ── Export button ──────────────────────────────────────────────────── */
+#btnExportData {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #1c3a4a, stop:1 #1c2d3a);
+    color: #89dceb;
+    border: 1px solid #89dceb;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+}
+#btnExportData:hover {
+    background: #89dceb;
+    color: #1e1e2e;
+}
+#btnExportData:disabled {
+    background: #313244;
+    color: #585b70;
+    border-color: #45475a;
 }
 
 /* ── Jump input ─────────────────────────────────────────────────────── */

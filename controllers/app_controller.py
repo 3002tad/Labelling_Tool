@@ -61,6 +61,9 @@ class AudioPlayer(QObject):
         self._player.setPosition(0)
         self._player.play()
 
+    def set_position(self, pos_ms: int) -> None:
+        self._player.setPosition(pos_ms)
+
     def toggle_play_pause(self) -> None:
         if self._player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
             self.pause()
@@ -202,6 +205,10 @@ class AppController(QObject):
     def replay(self) -> None:
         self._player.replay()
 
+    @Slot(int)
+    def set_audio_position(self, pos_ms: int) -> None:
+        self._player.set_position(pos_ms)
+
     # ------------------------------------------------------------------ #
     # Public API — Label actions
     # ------------------------------------------------------------------ #
@@ -224,11 +231,20 @@ class AppController(QObject):
 
     @Slot(str)
     def reject_segment(self, reason: str) -> None:
-        """Reject segment hiện tại với lý do cho trước."""
+        """
+        Reject segment hiện tại.
+        `reason` có thể là một hoặc nhiều lý do cách nhau bằng dấu phẩy,
+        VD: 'Noise' hoặc 'Noise,Clipping'.
+        """
         if not self._model.is_loaded:
             return
-        if reason not in REJECT_REASONS:
-            self.error_occurred.emit(f"Lý do reject không hợp lệ: {reason}")
+        # Validate từng phần của chuỗi lý do
+        parts = [p.strip() for p in reason.split(",") if p.strip()]
+        invalid = [p for p in parts if p not in REJECT_REASONS]
+        if not parts or invalid:
+            self.error_occurred.emit(
+                f"Lý do reject không hợp lệ: {', '.join(invalid or ['(trống)'])}"
+            )
             return
         self._player.stop()
         self._model.reject_segment(reason)
@@ -237,6 +253,7 @@ class AppController(QObject):
             f"✗ Đã reject segment #{self._model.current_index + 1} — {reason}"
         )
         self.navigate_next()
+
 
     # ------------------------------------------------------------------ #
     # Public API — Queries
