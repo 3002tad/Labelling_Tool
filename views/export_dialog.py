@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+import zipfile
 from typing import Any
 
 from PySide6.QtWidgets import (
@@ -34,11 +35,13 @@ class _ExportWorker(QObject):
     finished = Signal(int, str)   # (số bản ghi, đường dẫn file)
     error    = Signal(str)
 
-    def __init__(self, records: list[dict], out_path: str, fmt: str):
+    def __init__(self, records: list[dict], out_path: str, fmt: str, create_zip: bool = False, audio_files: list[tuple[str, str]] = None):
         super().__init__()
         self._records  = records
         self._out_path = out_path
         self._fmt      = fmt   # "jsonl" | "json"
+        self._create_zip = create_zip
+        self._audio_files = audio_files or []
 
     def run(self) -> None:
         try:
@@ -56,6 +59,16 @@ class _ExportWorker(QObject):
         else:  # json
             with open(self._out_path, "w", encoding="utf-8") as f:
                 json.dump(self._records, f, ensure_ascii=False, indent=2)
+                
+        if self._create_zip:
+            zip_path = self._out_path + ".zip"
+            with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+                zipf.write(self._out_path, os.path.basename(self._out_path))
+                for abs_path, rel_path in self._audio_files:
+                    if os.path.isfile(abs_path):
+                        zipf.write(abs_path, rel_path)
+            self._out_path = zip_path  # Trả về đường dẫn file zip
+
         return len(self._records)
 
 
@@ -191,6 +204,11 @@ class ExportDialog(QDialog):
         self._chk_segment_id.setChecked(True)
         self._chk_source.setChecked(False)
 
+        self._chk_zip = QCheckBox("Nén thành file ZIP (chứa kết quả và Audio)")
+        self._chk_zip.setChecked(False)
+        self._chk_zip.setObjectName("extraChk")
+        lay.addWidget(self._chk_zip)
+
         for chk in (self._chk_duration, self._chk_segment_id, self._chk_source):
             chk.setObjectName("extraChk")
             chk.toggled.connect(self._refresh_preview)
@@ -253,11 +271,12 @@ class ExportDialog(QDialog):
     # Logic
     # ------------------------------------------------------------------ #
 
-    def _build_records(self, max_preview: int | None = None) -> list[dict[str, Any]]:
-        """Tạo list dict từ các segment."""
+    def _build_records(self, max_preview: int | None = None) -> tuple[list[dict[str, Any]], list[tuple[str, str]]]:
+        """Tạo list dict từ các segment và danh sách file audio."""
         from models.data_model import SegmentStatus
 
         records: list[dict] = []
+        audio_files: list[tuple[str, str]] = []
         stats = self._model
         csv_dir = os.path.dirname(stats._csv_path or "") if stats._csv_path else ""
         include_rejected = self._chk_include_rejected.isChecked()
@@ -298,10 +317,15 @@ class ExportDialog(QDialog):
                 entry["source_file"] = rec.source_file
 
             records.append(entry)
+            
+            # audio_path in json might be absolute. Inside zip, we'll store it by basename if absolute.
+            zip_audio_path = audio_path if path_mode != "absolute" else os.path.basename(audio_path)
+            audio_files.append((rec.audio_path, zip_audio_path))
+
             if max_preview is not None and len(records) >= max_preview:
                 break
 
-        return records
+        return records, audio_files
 
     def _refresh_preview(self) -> None:
         """Cập nhật ô preview."""
@@ -321,7 +345,7 @@ class ExportDialog(QDialog):
             self._preview_count.setTextFormat(Qt.TextFormat.RichText)
             self._btn_export.setEnabled(valid_count > 0)
 
-            preview_recs = self._build_records(max_preview=3)
+            preview_recs, _ = self._build_records(max_preview=3)
             if not preview_recs:
                 self._preview_box.setPlainText("(Chưa có segment nào được gán nhãn)")
                 return
@@ -358,14 +382,15 @@ class ExportDialog(QDialog):
             return
 
         # Build full record list
-        all_records = self._build_records()
+        all_records, audio_files = self._build_records()
         if not all_records:
             return
 
         # Chạy export trong background thread
+        create_zip = getattr(self, '_chk_zip', None) and self._chk_zip.isChecked()
         self._set_busy(True)
         self._thread = QThread(self)
-        self._worker = _ExportWorker(all_records, out_path, fmt)
+        self._worker = _ExportWorker(all_records, out_path, fmt, create_zip, audio_files)
         self._worker.moveToThread(self._thread)
         self._thread.started.connect(self._worker.run)
         self._worker.finished.connect(self._on_export_done)
