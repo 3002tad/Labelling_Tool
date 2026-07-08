@@ -380,6 +380,54 @@ class MainWindow(QMainWindow):
         ctrl_row.addStretch()
         layout.addLayout(ctrl_row)
 
+        # Speed control row
+        speed_row = QHBoxLayout()
+        speed_row.setSpacing(8)
+
+        speed_icon = QLabel("🏎 Tốc độ:")
+        speed_icon.setStyleSheet("color: #7f849c; font-size: 11px;")
+
+        slow_lbl = QLabel("0.5x")
+        slow_lbl.setStyleSheet("color: #585b70; font-size: 10px;")
+
+        self._speed_slider = ClickableSlider(Qt.Orientation.Horizontal)
+        self._speed_slider.setObjectName("speedSlider")
+        self._speed_slider.setRange(50, 100)   # 50 = 0.5x, 100 = 1.0x
+        self._speed_slider.setValue(100)
+        self._speed_slider.setTickPosition(QSlider.TickPosition.TicksBelow)
+        self._speed_slider.setTickInterval(10)
+        self._speed_slider.setFixedWidth(160)
+        self._speed_slider.setFixedHeight(24)
+        self._speed_slider.valueChanged.connect(self._on_speed_slider_changed)
+
+        fast_lbl = QLabel("1.0x")
+        fast_lbl.setStyleSheet("color: #585b70; font-size: 10px;")
+
+        self._speed_lbl = QLabel("1.0x")
+        self._speed_lbl.setObjectName("speedLabel")
+        self._speed_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._speed_lbl.setFixedWidth(44)
+        self._speed_lbl.setStyleSheet(
+            "color: #cba6f7; font-size: 12px; font-weight: 700;"
+        )
+
+        self._btn_speed_reset = QPushButton("↺ 1x")
+        self._btn_speed_reset.setObjectName("btnCtrl")
+        self._btn_speed_reset.setToolTip("Về tốc độ gốc (1.0x)")
+        self._btn_speed_reset.setFixedSize(42, 26)
+        self._btn_speed_reset.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._btn_speed_reset.clicked.connect(self._on_speed_reset)
+
+        speed_row.addStretch()
+        speed_row.addWidget(speed_icon)
+        speed_row.addWidget(slow_lbl)
+        speed_row.addWidget(self._speed_slider)
+        speed_row.addWidget(fast_lbl)
+        speed_row.addWidget(self._speed_lbl)
+        speed_row.addWidget(self._btn_speed_reset)
+        speed_row.addStretch()
+        layout.addLayout(speed_row)
+
         return frame
 
     def _build_transcript_area(self) -> QFrame:
@@ -676,6 +724,18 @@ class MainWindow(QMainWindow):
         data = self._filter_combo.itemData(index)
         if data:
             self._controller.set_filter(data)
+
+    # Speed control helpers
+
+    def _on_speed_slider_changed(self, value: int) -> None:
+        rate = value / 100.0
+        self._controller.set_playback_rate(rate)
+        self._speed_lbl.setText(f"{rate:.2f}x")
+
+    def _on_speed_reset(self) -> None:
+        self._speed_slider.setValue(100)
+        self._controller.set_playback_rate(1.0)
+        self._speed_lbl.setText("1.00x")
 
     def _on_transcript_changed(self) -> None:
         self._update_char_count()

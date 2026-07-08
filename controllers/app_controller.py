@@ -64,6 +64,13 @@ class AudioPlayer(QObject):
     def set_position(self, pos_ms: int) -> None:
         self._player.setPosition(pos_ms)
 
+    def set_playback_rate(self, rate: float) -> None:
+        self._player.setPlaybackRate(rate)
+
+    @property
+    def playback_rate(self) -> float:
+        return self._player.playbackRate()
+
     def toggle_play_pause(self) -> None:
         if self._player.playbackState() == QMediaPlayer.PlaybackState.PlayingState:
             self.pause()
@@ -215,6 +222,10 @@ class AppController(QObject):
     @Slot(int)
     def set_audio_position(self, pos_ms: int) -> None:
         self._player.set_position(pos_ms)
+
+    @Slot(float)
+    def set_playback_rate(self, rate: float) -> None:
+        self._player.set_playback_rate(rate)
 
     # ------------------------------------------------------------------ #
     # Public API — Label actions
